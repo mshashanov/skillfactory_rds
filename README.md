@@ -1,1 +1,1 @@
-# skillfactory_rds
+# Проекты по специализации Data Science
