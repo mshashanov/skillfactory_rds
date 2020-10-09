@@ -2,14 +2,15 @@
 # It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
 # For example, here's several helpful packages to load
 
-import numpy as np  # linear algebra
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from collections import Counter
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sns 
+
 
 
 def get_percentiles(col):
@@ -41,10 +42,10 @@ def print_column_hist_old(col, list_borders, list_borders_plot=None):
                                                                 range=list_borders_plot,
                                                                 label='Здравый смысл')
     col.loc[col.between(list_perc[1][0], list_perc[1][1])].hist(bins=100,
-                                                                range=list_borders_plot,
-                                                                label='IQR')
+        range=list_borders_plot,
+        label='IQR')
     plt.legend()
-
+    
 
 def print_column_hist(col, list_borders_plot=None):
     '''Функция вывода гистограммы и оценки выбросов для данной колонки DataFrame'''
@@ -58,14 +59,34 @@ def print_column_hist(col, list_borders_plot=None):
         list_borders_plot = (round(list_borders[0] - 2), round(list_borders[1] + 2))
     else:
         list_borders_plot = sorted(list_borders_plot)
-
+    
     col.hist(alpha=0.5,
-             bins=100,
-             range=list_borders_plot,
-             label='Original')
+        bins=100,
+        range=list_borders_plot,
+        color='tab:red',
+        label='Original')
     col.loc[col.between(list_perc[1][0], list_perc[1][1])].hist(bins=100,
-                                                                range=list_borders_plot,
-                                                                label='IQR')
+        range=list_borders_plot,
+        color='tab:blue',                                                        
+        label='IQR')
     plt.legend()
 
+    
+def plot_regions_hist(df, col_name, hist_range):
+    regions_list = sorted(df['region_rating'].unique())
+    
+    #fig, axes = plt.subplots(2, 4, figsize=(25,12))
+    # for region in regions_list:
+    for region, i in zip(regions_list, range(7)):    
+        data = df[col_name][df['region_rating'] == region]
+        display(region, data.describe())
+        #sns.distplot(data, kde=False, ax=axes.flat[i])
+        # df[col_name][df['region_rating'] == region].hist(bins=100, range=hist_range)
+           
+    # plt.show()
+ 
 
+    
+    
+    
+    
